@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#dceeff" />
+  <title>Project NIA — Our First Chapter</title>
+  <style>
+    :root {
+      --sky: #dceeff;
+      --ice: #f6fbff;
+      --blue: #8ec5f4;
+      --blue-deep: #4c8fc9;
+      --navy: #19365d;
+      --ink: #20334d;
+      --muted: #667b98;
+      --paper: #fffdf8;
+      --line: rgba(25, 54, 93, .13);
+      --shadow: 0 18px 55px rgba(39, 88, 139, .13);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255,255,255,.95) 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 18%, rgba(255,255,255,.9) 0 2px, transparent 3px),
+        linear-gradient(180deg, #d8ebff 0%, #eef7ff 45%, #f9fbff 100%);
+      background-size: 110px 110px, 150px 150px, auto;
+      overflow-x: hidden;
+    }
+    body::before, body::after {
+      content: "✦";
+      position: fixed;
+      z-index: -1;
+      color: rgba(76,143,201,.22);
+      font-size: 5rem;
+      pointer-events: none;
+    }
+    body::before { top: 12%; left: -12px; }
+    body::after { right: -10px; bottom: 12%; font-size: 7rem; }
+    a { color: inherit; }
+    button { font: inherit; }
+    .wrap { width: min(100% - 32px, 980px); margin-inline: auto; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 0; gap: 12px;
+    }
+    .brand { font-weight: 900; letter-spacing: .08em; color: var(--navy); font-size: .82rem; }
+    .tiny-label {
+      border: 1px solid rgba(25,54,93,.16); background: rgba(255,255,255,.5);
+      border-radius: 999px; padding: 8px 12px; color: var(--navy); font-size: .75rem;
+    }
+    .hero { min-height: 77vh; display: grid; place-items: center; padding: 36px 0 60px; }
+    .hero-card {
+      width: 100%; text-align: center; position: relative; overflow: hidden;
+      padding: clamp(28px, 7vw, 68px) 22px; border-radius: 30px;
+      background: linear-gradient(145deg, rgba(255,255,255,.85), rgba(242,249,255,.68));
+      border: 1px solid rgba(255,255,255,.95); box-shadow: var(--shadow);
+    }
+    .hero-card::before {
+      content: ""; position: absolute; width: 250px; height: 250px; border-radius: 50%;
+      background: rgba(142,197,244,.25); filter: blur(4px); top: -130px; right: -75px;
+    }
+    .hero-card::after {
+      content: ""; position: absolute; width: 190px; height: 190px; border-radius: 50%;
+      background: rgba(25,54,93,.06); bottom: -110px; left: -65px;
+    }
+    .eyebrow { color: var(--blue-deep); text-transform: uppercase; letter-spacing: .22em; font-size: .7rem; font-weight: 900; }
+    h1, h2, h3, p { position: relative; }
+    h1 {
+      margin: 18px 0 12px; color: var(--navy); font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.5rem, 11vw, 5.7rem); line-height: .98; letter-spacing: -.055em;
+      font-weight: 500;
+    }
+    .hero-sub { max-width: 540px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 1rem; }
+    .hero-date { margin: 20px 0 26px; color: var(--navy); font-size: .88rem; letter-spacing: .08em; }
+    .btn {
+      border: 0; border-radius: 999px; padding: 13px 19px; cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      font-weight: 800; font-size: .9rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--navy); color: white; box-shadow: 0 8px 20px rgba(25,54,93,.2); }
+    .btn-secondary { background: rgba(255,255,255,.72); color: var(--navy); border: 1px solid var(--line); }
+    .star { color: #6ca7df; display: inline-block; animation: twinkle 2.4s ease-in-out infinite; }
+    @keyframes twinkle { 0%,100% { opacity: .45; transform: scale(.9) rotate(0); } 50% { opacity: 1; transform: scale(1.12) rotate(12deg); } }
+    section { padding: 38px 0; }
+    .section-head { margin-bottom: 22px; }
+    .section-head .eyebrow { margin-bottom: 9px; display: block; }
+    h2 { margin: 0; font: 500 clamp(1.9rem, 6vw, 3rem)/1.1 Georgia, serif; color: var(--navy); letter-spacing: -.035em; }
+    .section-desc { color: var(--muted); line-height: 1.75; margin: 12px 0 0; max-width: 620px; }
+    .counter-card {
+      display: grid; grid-template-columns: 1fr; gap: 20px; padding: 24px;
+      border-radius: 24px; background: rgba(255,255,255,.72); border: 1px solid white; box-shadow: var(--shadow);
+    }
+    .counter-intro { color: var(--muted); line-height: 1.7; margin: 8px 0 0; }
+    .counter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; align-items: stretch; }
+    .time-box { background: linear-gradient(180deg, #fafdff, #e6f3ff); border: 1px solid var(--line); border-radius: 16px; text-align: center; padding: 15px 4px; }
+    .time-box strong { display: block; font-size: clamp(1.35rem, 5vw, 2rem); color: var(--navy); }
+    .time-box span { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .memory-card {
+      background: rgba(255,255,255,.83); padding: 10px; border-radius: 18px; border: 1px solid white;
+      box-shadow: 0 8px 28px rgba(39,88,139,.09); transform: rotate(var(--tilt, -1deg));
+    }
+    .memory-card:nth-child(2n) { --tilt: 1.3deg; }
+    .memory-card:nth-child(3n) { --tilt: -.5deg; }
+    .photo {
+      position: relative; aspect-ratio: 4 / 5; width: 100%; border-radius: 12px; overflow: hidden;
+      display: grid; place-items: center; text-align: center; padding: 12px;
+      color: #54769b; background: linear-gradient(145deg, #d9edff, #f7fbff 60%, #b6d8f7);
+    }
+    .photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .photo .placeholder { position: relative; z-index: 1; font-size: .82rem; line-height: 1.5; }
+    .photo:has(img[src]:not([src=""])) .placeholder { display: none; }
+    .memory-caption { padding: 12px 4px 4px; }
+    .memory-caption strong { display: block; color: var(--navy); font: 500 1.02rem Georgia, serif; }
+    .memory-caption p { font-size: .8rem; line-height: 1.6; color: var(--muted); margin: 5px 0 0; }
+    .letter-layout { display: grid; gap: 20px; align-items: center; }
+    .envelope-area { display: grid; place-items: center; padding: 20px 0; }
+    .envelope {
+      width: min(100%, 330px); height: 210px; position: relative; cursor: pointer;
+      border: 0; background: transparent; padding: 0; perspective: 900px;
+      filter: drop-shadow(0 16px 20px rgba(25,54,93,.14));
+    }
+    .env-back { position: absolute; inset: 0; background: #8bbbe8; border-radius: 12px; }
+    .env-letter {
+      position: absolute; left: 7%; width: 86%; height: 84%; bottom: 5%; padding: 20px 12px;
+      background: var(--paper); border-radius: 7px; transition: transform .7s cubic-bezier(.2,.8,.2,1);
+      color: var(--navy); font-family: Georgia, serif; font-size: 1rem;
+    }
+    .env-front {
+      position: absolute; inset: 0; border-radius: 12px;
+      background: linear-gradient(145deg, #b5d9fa, #77aee1);
+      clip-path: polygon(0 0, 50% 57%, 100% 0, 100% 100%, 0 100%);
+    }
+    .env-flap {
+      position: absolute; inset: 0; background: #9ac8f1; border-radius: 12px;
+      clip-path: polygon(0 0, 100% 0, 50% 58%); transform-origin: top; transition: transform .65s ease; z-index: 3;
+    }
+    .seal {
+      position: absolute; z-index: 4; left: 50%; top: 57%; transform: translate(-50%,-50%);
+      width: 42px; height: 42px; border-radius: 50%; background: var(--navy); color: white;
+      display: grid; place-items: center; font-size: 1.1rem; border: 2px solid rgba(255,255,255,.7);
+      transition: opacity .3s ease;
+    }
+    .envelope.open .env-flap { transform: rotateX(180deg); z-index: 0; }
+    .envelope.open .env-letter { transform: translateY(-105px); }
+    .envelope.open .seal { opacity: 0; }
+    .tap-hint { color: var(--muted); text-align: center; font-size: .8rem; margin-top: 12px; }
+    .letter-paper {
+      background: var(--paper); border-radius: 22px; border: 1px solid #f1eadc;
+      padding: clamp(22px, 5vw, 38px); box-shadow: var(--shadow); display: none;
+      line-height: 1.95; color: #3c4b60; white-space: pre-line;
+    }
+    .letter-paper.visible { display: block; animation: rise .65s ease both; }
+    .letter-paper h3 { margin-top: 0; color: var(--navy); font: 500 1.8rem Georgia, serif; }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .closing {
+      text-align: center; padding: 42px 22px; border-radius: 26px;
+      background: linear-gradient(135deg, rgba(220,238,255,.85), rgba(255,255,255,.85)); border: 1px solid white;
+    }
+    .closing .big-heart { font-size: 2rem; color: #5c96d0; }
+    .closing p { max-width: 550px; margin: 12px auto 0; color: var(--muted); line-height: 1.8; }
+    footer { text-align: center; padding: 30px 0 42px; color: #7b8da5; font-size: .75rem; }
+    .music-control { position: fixed; right: 14px; bottom: 14px; z-index: 10; border-radius: 999px; }
+    .hidden { display: none !important; }
+    @media (min-width: 680px) {
+      .counter-card { grid-template-columns: .8fr 1.2fr; align-items: center; padding: 30px; }
+      .gallery { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+      .letter-layout { grid-template-columns: .9fr 1.1fr; gap: 32px; }
+      .hero { min-height: 82vh; }
+    }
+    @media (max-width: 380px) {
+      .wrap { width: min(100% - 22px, 980px); }
+      .counter-grid { gap: 5px; }
+      .time-box { padding: 12px 2px; }
+      .time-box span { font-size: .58rem; }
+      .gallery { gap: 9px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap topbar">
+    <div class="brand">✦ PROJECT NIA</div>
+    <div class="tiny-label">our first chapter · 01</div>
+  </header>
+
+  <main>
+    <section class="hero wrap" id="home">
+      <div class="hero-card">
+        <div class="eyebrow"><span class="star">✧</span> a little world made for you <span class="star">✧</span></div>
+        <!-- EDIT: change "Nia" here if you want a different display name -->
+        <h1>For Nia,<br />my favorite chapter.</h1>
+        <p class="hero-sub">Di antara banyak hal yang terjadi di dunia ini, salah satu hal favoritku adalah bisa mengenal kamu, tumbuh bareng kamu, dan menyimpan cerita kita.</p>
+        <!-- EDIT: replace this date with your anniversary date -->
+        <p class="hero-date" id="anniversaryLabel">26 OCTOBER 2025 — 26 OCTOBER 2026</p>
+        <button class="btn btn-primary" onclick="document.querySelector('#memories').scrollIntoView({behavior:'smooth'})">Buka cerita kita <span aria-hidden="true">↘</span></button>
+      </div>
+    </section>
+
+    <section class="wrap" id="time-together">
+      <div class="section-head">
+        <span class="eyebrow">chapter after chapter</span>
+        <h2>Waktu yang sudah kita punya.</h2>
+        <p class="section-desc">Waktu terus berjalan, tapi ada momen-momen yang ingin kusimpan lebih lama.</p>
+      </div>
+      <div class="counter-card">
+        <div>
+          <div class="eyebrow">since the day we began</div>
+          <h3 style="font:500 1.6rem Georgia,serif;color:var(--navy);margin:10px 0 0;">And still, here we are. ♡</h3>
+          <p class="counter-intro">Terima kasih sudah menjadi bagian dari hari-hariku.</p>
+        </div>
+        <div class="counter-grid" aria-label="Waktu bersama">
+          <div class="time-box"><strong id="days">000</strong><span>Hari</span></div>
+          <div class="time-box"><strong id="hours">00</strong><span>Jam</span></div>
+          <div class="time-box"><strong id="minutes">00</strong><span>Menit</span></div>
+          <div class="time-box"><strong id="seconds">00</strong><span>Detik</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="memories">
+      <div class="section-head">
+        <span class="eyebrow">little memories, big feelings</span>
+        <h2>Potongan kecil dari kita.</h2>
+        <p class="section-desc">Beberapa momen sederhana yang jadi istimewa karena ada kamu di dalamnya.</p>
+      </div>
+      <div class="gallery">
+        <!-- EDIT: put each photo file next to index.html, then replace the empty src with its filename, e.g. src="foto-1.jpg" -->
+        <article class="memory-card">
+          <div class="photo"><img src="" alt="Foto kenangan pertama" /><div class="placeholder">📷<br />Tambahkan foto 1<br /><small>foto-1.jpg</small></div></div>
+          <div class="memory-caption"><strong>Awal cerita kita</strong><p>Ganti dengan cerita singkat tentang awal kalian dekat.</p></div>
+        </article>
+        <article class="memory-card">
+          <div class="photo"><img src="" alt="Foto kenangan kedua" /><div class="placeholder">☁️<br />Tambahkan foto 2<br /><small>foto-2.jpg</small></div></div>
+          <div class="memory-caption"><strong>Hari yang kusuka</strong><p>Tulis satu kenangan yang masih bikin kamu senyum.</p></div>
+        </article>
+        <article class="memory-card">
+          <div class="photo"><img src="" alt="Foto kenangan ketiga" /><div class="placeholder">✦<br />Tambahkan foto 3<br /><small>foto-3.jpg</small></div></div>
+          <div class="memory-caption"><strong>Hal kecil tentangmu</strong><p>Hal sederhana tentang Nia yang selalu kamu ingat.</p></div>
+        </article>
+        <article class="memory-card">
+          <div class="photo"><img src="" alt="Foto kenangan keempat" /><div class="placeholder">♡<br />Tambahkan foto 4<br /><small>foto-4.jpg</small></div></div>
+          <div class="memory-caption"><strong>To be continued...</strong><p>Masih banyak cerita yang ingin kita tulis.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap" id="letter">
+      <div class="section-head">
+        <span class="eyebrow">sealed with love</span>
+        <h2>Ada surat untukmu.</h2>
+        <p class="section-desc">Coba buka amplopnya. Ada beberapa hal yang ingin kusampaikan langsung kepadamu.</p>
+      </div>
+      <div class="letter-layout">
+        <div class="envelope-area">
+          <button class="envelope" id="envelope" aria-label="Buka amplop surat" aria-expanded="false">
+            <span class="env-back"></span>
+            <span class="env-letter">For my favorite person<br /><span style="font-size:.78rem;color:#6b87a5">open when you're ready ♡</span></span>
+            <span class="env-front"></span>
+            <span class="env-flap"></span>
+            <span class="seal">♡</span>
+          </button>
+          <p class="tap-hint">Ketuk amplop untuk membuka surat</p>
+        </div>
+        <article class="letter-paper" id="letterPaper">
+          <h3>Untuk Nia,</h3>
+          <!-- EDIT: replace this letter with your own words -->
+          Nggak terasa ya, kita sudah sampai di satu tahun.
+
+          Aku mungkin belum selalu tahu cara terbaik buat menyampaikan isi kepala dan perasaanku. Tapi selama setahun ini, aku belajar bahwa hubungan bukan tentang selalu sempurna, melainkan tentang terus belajar memahami, memperbaiki, dan memilih untuk tumbuh bersama.
+
+          Terima kasih untuk cerita, tawa, waktu, dan hal-hal kecil yang kita bagi. Aku nggak bisa menjanjikan setiap hari akan selalu mudah, tapi aku ingin terus berusaha hadir, mendengarkan, dan membangun kenangan baru sama kamu.
+
+          Semoga di bab berikutnya, kita bisa semakin mengenal satu sama lain—tanpa harus jadi sempurna, cukup tetap jujur, saling menghargai, dan bertumbuh.
+
+          Selamat satu tahun, Nia. Terima kasih sudah menjadi bagian dari ceritaku.
+
+          <strong>Dengan sayang,</strong>
+          <strong>— [TULIS NAMAMU DI SINI] ♡</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="closing">
+        <div class="big-heart">✧ ♡ ✧</div>
+        <h2 style="font-size:clamp(1.8rem,6vw,2.7rem);margin-top:12px;">This is only the beginning.</h2>
+        <p>Kalau suatu hari nanti kita membuka halaman ini lagi, semoga kita bisa tersenyum melihat sejauh apa kita sudah berjalan.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- OPTIONAL MUSIC: put a file named "musik.mp3" next to index.html to use this. Browsers require a tap before music can start. -->
+  <audio id="bgMusic" loop preload="none">
+    <source src="musik.mp3" type="audio/mpeg" />
+  </audio>
+  <button class="btn btn-secondary music-control" id="musicButton" type="button">♫ Musik: mati</button>
+
+  <footer class="wrap">dibuat dengan hati, untuk satu orang yang spesial · Project NIA ♡</footer>
+
+  <script>
+    // EDIT: Use your real anniversary date/time in ISO format with +07:00 for WIB.
+    // Example: 2025-10-26T00:00:00+07:00
+    const ANNIVERSARY_DATE = '2025-10-26T00:00:00+07:00';
+
+    const startDate = new Date(ANNIVERSARY_DATE);
+    const pad = (number) => String(number).padStart(2, '0');
+
+    function updateCounter() {
+      const now = new Date();
+      let diff = Math.max(0, now.getTime() - startDate.getTime());
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      document.getElementById('days').textContent = String(days).padStart(3, '0');
+      document.getElementById('hours').textContent = pad(hours);
+      document.getElementById('minutes').textContent = pad(minutes);
+      document.getElementById('seconds').textContent = pad(seconds);
+    }
+    updateCounter();
+    setInterval(updateCounter, 1000);
+
+    const envelope = document.getElementById('envelope');
+    const letterPaper = document.getElementById('letterPaper');
+    envelope.addEventListener('click', () => {
+      const opened = envelope.classList.toggle('open');
+      envelope.setAttribute('aria-expanded', String(opened));
+      letterPaper.classList.toggle('visible', opened);
+      if (opened) {
+        setTimeout(() => letterPaper.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 220);
+      }
+    });
+
+    const music = document.getElementById('bgMusic');
+    const musicButton = document.getElementById('musicButton');
+    let musicOn = false;
+    musicButton.addEventListener('click', async () => {
+      if (!musicOn) {
+        try {
+          await music.play();
+          musicOn = true;
+          musicButton.textContent = '♫ Musik: nyala';
+        } catch (error) {
+          musicButton.textContent = 'Tambahkan musik.mp3';
+        }
+      } else {
+        music.pause();
+        musicOn = false;
+        musicButton.textContent = '♫ Musik: mati';
+      }
+    });
+
+    // Photo placeholders disappear automatically when a real filename is supplied.
+    document.querySelectorAll('.photo img').forEach((img) => {
+      img.addEventListener('error', () => {
+        img.style.display = 'none';
+      });
+      img.addEventListener('load', () => {
+        img.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>
